@@ -1,6 +1,7 @@
 import 'package:app_news/appcolors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeDrawer extends StatelessWidget {
   static const int categories = 1;
@@ -21,7 +22,7 @@ width: double.infinity,
           //height:MediaQuery.of(context).size.height*.2 ,
           color: AppColors.primaryLightColor,
           child: Center(
-            child: Text('News App!'
+            child: Text(AppLocalizations.of(context)!.news_app
               ,style: Theme.of(context).textTheme.titleLarge,),
           ),
         ),
@@ -36,7 +37,7 @@ onSideMenuItemClick(categories);
               children: [
                 Icon(Icons.list,size: 35,color: AppColors.blackColor,),
                 SizedBox(width: 10,),
-                Text('Categories',style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                Text(AppLocalizations.of(context)!.categories,style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontSize: 27,
                 ),)
               ],
@@ -54,7 +55,7 @@ onSideMenuItemClick(settings);
               children: [
                 Icon(Icons.settings,size: 35,color: AppColors.blackColor,),
                 SizedBox(width: 10,),
-                Text('Settings',style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                Text(AppLocalizations.of(context)!.settings,style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontSize: 27,
                 ),)
               ],

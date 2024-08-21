@@ -1,0 +1,17 @@
+{
+"arabic" : "العربية",
+"english" : "الانجليزية",
+"language" : "اللغة",
+"settings":"الاعدادات",
+"news_App":"تطبيق اخبار",
+"news_app":"تطبيق اخبار!",
+"categories":"فئات",
+"business":"اعمال",
+"entertainment":"ترفيه",
+"general":"عام",
+"health":"صحة",
+"science":"علوم",
+"sports":"رياضة",
+"pick_your_category_of_interest": "اختر الفئة التي تهمك"
+
+}

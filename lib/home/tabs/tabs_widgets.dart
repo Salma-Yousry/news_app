@@ -37,7 +37,8 @@ int selectedindex=0;
           TabItems(source: source,
               isSelected: selectedindex == widget.sourceList.indexOf(source),
           )).toList(),),
-      Expanded(child: NewsWidght(source: widget.sourceList[selectedindex]))
+      Expanded(
+          child: NewsWidght(source: widget.sourceList[selectedindex]))
     ],
     )
     );

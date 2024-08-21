@@ -1,4 +1,5 @@
-import 'package:app_news/settings/settings.dart';
+
+import 'package:app_news/search/search_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../appcolors.dart';
@@ -7,6 +8,8 @@ import '../category/category_fragment.dart';
 import '../drawer/home_drawer.dart';
 import '../model/category.dart';
 
+import '../settings/settings_tab.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class HomeScreen extends StatefulWidget {
 
 static const String route_name = 'Home_Screen';
@@ -16,6 +19,7 @@ static const String route_name = 'Home_Screen';
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -27,30 +31,50 @@ class _HomeScreenState extends State<HomeScreen> {
       height: double.infinity,
       fit: BoxFit.cover,
     ),
+
   ),
   Scaffold(
+
 backgroundColor: Colors.transparent,
+
     appBar: AppBar(
+
       title: Text(
         selectMenuItem == HomeDrawer.settings?
-            'Settings'
+    AppLocalizations.of(context)!.settings
             :
             selectedCategary==null?
-        'News App': selectedCategary!.title,
+            AppLocalizations.of(context)!.news_App: selectedCategary!.title,
         style: Theme.of(context).textTheme.titleLarge,
       ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SearchScreen(),),
+            );
+          },
+        ),
+      ],
     ),
+
     drawer: Drawer(
       child: HomeDrawer(onSideMenuItemClick: onSideMenuItemClick,),
     ),
+
     body: selectMenuItem == HomeDrawer.settings?
         SettingsTab()
         :
-
-       selectedCategary == null
+    selectedCategary == null
         ? CategoryFragment(onCategoryItemClick: onCategoryItemClick)
         : CategoryDetails(category: selectedCategary!),
+
   ),
+
+
+
 ],
     );
   }

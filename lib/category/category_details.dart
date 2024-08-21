@@ -1,9 +1,10 @@
-import 'package:app_news/category/category_details_view_model.dart';
+
+import 'package:app_news/category/cubit/category_details_view_model.dart';
+import 'package:app_news/category/cubit/sourcestate.dart';
 import 'package:app_news/model/category.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../Api/api_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../appcolors.dart';
 import '../home/tabs/tabs_widgets.dart';
 
@@ -17,46 +18,47 @@ CategoryDetails({required this.category});
 }
 
 class _CategoryDetailsState extends State<CategoryDetails> {
-  CategoryDetailsViewModel viewModel = CategoryDetailsViewModel();
+CategoryDetailsViewModel viewModel = CategoryDetailsViewModel();
   @override
-
-  void initState() {
+void initState() {
     // TODO: implement initState
     super.initState();
-    viewModel.getSources(widget.category.id);
+    viewModel.getSource(widget.category.id);
   }
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => viewModel,
-      //Consumer listen to view model
-      child: Consumer <CategoryDetailsViewModel>(
-        //builder return widget
-        builder:((context,viewModel,child){
-          if(viewModel.errorMassage != null){
-            return   Column(
-              children: [
-                Text(viewModel.errorMassage!),
-                ElevatedButton(onPressed: (){
-                  viewModel.getSources(widget.category.id);
-                  }
-          ,child: Text('Try Again')),
-
-              ],
-            );
-          }
-else if(viewModel.sourceList == null){
+    return BlocBuilder<CategoryDetailsViewModel,SourceState>(
+      bloc: viewModel,
+        builder: (context,state){
+if(state is SourceLoadingState){
   return Center(child: CircularProgressIndicator(
-      color: AppColors.primaryLightColor,
-  ),
+    color: AppColors.primaryLightColor,
+  ),);
+}else if(state is SourceErrorState){
+  return Column(
+    children: [
+      Text(state.errorMessage),
+      ElevatedButton(onPressed: (){
+viewModel.getSource(widget.category.id);
+      }, child: Text('Try Again')),
+    ],
   );
+}else if (state is SourceSuccessState){
+  return TabsWidgets(sourceList:state.sourceList );
 }else{
-  return TabsWidgets(sourceList:viewModel.sourceList! );
+  return Container();
 }
-        }),
-      ),
+  }
     );
 
- /*FutureBuilder <SourceResponse?> (
+
+
+
+
+
+
+
+
+      /* FutureBuilder <SourceResponse?> (
         future: ApiManager.getSources(widget.category.id),
         builder: (context,snapshot){
           if(snapshot.connectionState == ConnectionState.waiting){
@@ -94,6 +96,6 @@ else if(viewModel.sourceList == null){
           var sourceList = snapshot.data!.sources!;
           return TabsWidgets(sourceList:sourceList );
         }
-    );*/
+    ); */
   }
 }

@@ -1,11 +1,14 @@
-import 'package:app_news/Api/api_manager.dart';
+
+import 'package:app_news/home/news/cubit/news_widght_view_model.dart';
+import 'package:app_news/home/news/cubit/newsstate.dart';
 import 'package:app_news/home/news/news_items.dart';
-import 'package:app_news/model/NewsResponce.dart';
 import 'package:app_news/model/SourceResponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../appcolors.dart';
+
 
 class NewsWidght extends StatefulWidget {
 Source source;
@@ -16,9 +19,47 @@ NewsWidght({required this.source});
 }
 
 class _NewsWidghtState extends State<NewsWidght> {
-  @override
+  NewsWidgetViewModel viewModel = NewsWidgetViewModel();
+@override
+void initState() {
+  // TODO: implement initState
+  super.initState();
+  viewModel.getNewsBySourceId(widget.source.id??'');
+}
   Widget build(BuildContext context) {
-    return FutureBuilder<NewsResponce?>(
+  //BlocConsumer in session 17
+
+    return BlocBuilder<NewsWidgetViewModel, NewsState>(
+        bloc: viewModel,
+        builder: (context, state) {
+          if (state is NewsLoadingState) {
+            return Center(child: CircularProgressIndicator(
+              color: AppColors.primaryLightColor,
+            ),);
+          } else if (state is NewsErrorState) {
+           return Column(
+              children: [
+                Text(state.errorMessage),
+                ElevatedButton(onPressed: () {
+                  viewModel.getNewsBySourceId(widget.source.id ?? '');
+                }, child: Text('Try Again')),
+              ],
+            );
+          } else if (state is NewsSuccessState) {
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                return NewsItems(news: state.newsList[index]);
+              },
+              itemCount: state.newsList.length
+            );
+          }else{
+            return Container();
+          }
+        }
+    );
+
+
+      /*FutureBuilder<NewsResponce?>(
         future: ApiManager.getNewsBySourceId(widget.source.id??''),
         builder: (context,snapshot){
           if(snapshot.connectionState == ConnectionState.waiting){
@@ -59,7 +100,7 @@ class _NewsWidghtState extends State<NewsWidght> {
 
               );
         }
-    );
+    );*/
 
   }
 }
