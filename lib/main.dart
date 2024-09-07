@@ -3,12 +3,20 @@ import 'package:app_news/my_theme_data.dart';
 import 'package:app_news/providers/app_config_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'di/di.dart';
 import 'my_bloc_observer.dart';
 
-void main(){
+void main() async{
+  configureDependencies();
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
+  final documentDirectory = await getApplicationDocumentsDirectory();
+  Hive.init(documentDirectory.path);
+
   runApp(ChangeNotifierProvider(
       create:(context) => AppConfigProvider() ,
       child: MyApp()));

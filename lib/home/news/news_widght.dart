@@ -1,4 +1,6 @@
 
+import 'package:app_news/di/di.dart';
+import 'package:app_news/di/di_impl.dart';
 import 'package:app_news/home/news/cubit/news_widght_view_model.dart';
 import 'package:app_news/home/news/cubit/newsstate.dart';
 import 'package:app_news/home/news/news_items.dart';
@@ -19,7 +21,8 @@ NewsWidght({required this.source});
 }
 
 class _NewsWidghtState extends State<NewsWidght> {
-  NewsWidgetViewModel viewModel = NewsWidgetViewModel();
+  NewsWidgetViewModel viewModel = getIt<NewsWidgetViewModel>();
+ // NewsWidgetViewModel viewModel = NewsWidgetViewModel(newsRepository: injectNewsRepository());
 @override
 void initState() {
   // TODO: implement initState

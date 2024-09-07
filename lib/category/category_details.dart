@@ -1,6 +1,8 @@
 
 import 'package:app_news/category/cubit/category_details_view_model.dart';
 import 'package:app_news/category/cubit/sourcestate.dart';
+import 'package:app_news/di/di.dart';
+import 'package:app_news/di/di_impl.dart';
 import 'package:app_news/model/category.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,9 @@ CategoryDetails({required this.category});
 }
 
 class _CategoryDetailsState extends State<CategoryDetails> {
-CategoryDetailsViewModel viewModel = CategoryDetailsViewModel();
+  CategoryDetailsViewModel viewModel = getIt<CategoryDetailsViewModel>(); ///field injection
+//CategoryDetailsViewModel viewModel =
+//CategoryDetailsViewModel(sourceRepositoryContract: injectSourceRepository());
   @override
 void initState() {
     // TODO: implement initState
@@ -49,11 +53,6 @@ viewModel.getSource(widget.category.id);
 }
   }
     );
-
-
-
-
-
 
 
 
